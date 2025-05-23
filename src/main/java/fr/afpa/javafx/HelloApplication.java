@@ -15,6 +15,8 @@ public class HelloApplication extends Application {
         stage.setTitle("JavaFXApplication");
         stage.setScene(scene);
         stage.show();
+        stage.setWidth(600);
+        stage.setHeight(250);
     }
 
     public static void main(String[] args) {

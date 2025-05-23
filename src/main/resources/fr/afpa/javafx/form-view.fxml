@@ -6,19 +6,45 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="fr.afpa.javafx.FormController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.layout.GridPane?>
 
-    <Label fx:id="entryTitle" text="Entrée utilisateur : "/>
-    <Label fx:id="copyTitle" text="Copie de l'entrée : "/>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.Region?>
+<GridPane hgap="20" vgap="20" xmlns:fx="http://javafx.com/fxml" alignment="CENTER"
+          fx:controller="fr.afpa.javafx.FormController">
+        <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
+        </padding>
 
-    <TextField fx:id="entryField" text="Saisissez un texte"/>
-    <TextField fx:id="copyField" text=""/>
+    <columnConstraints>
+        <ColumnConstraints minWidth="100" hgrow="ALWAYS"/>
+        <ColumnConstraints hgrow="ALWAYS"/>
+        <ColumnConstraints minWidth="90" hgrow="ALWAYS"/>
+    </columnConstraints>
 
-    <Button text="Recopier" onAction="#onRecopierButtonClick"/>
-    <Button text="Effacer" onAction="#onEffacerButtonClick"/>
-    <Button text="Quitter" onAction="#onQuitterButtonClick"/>
-</VBox>
+    <rowConstraints>
+        <RowConstraints minHeight="40" prefHeight="80" vgrow="ALWAYS"/>
+        <RowConstraints minHeight="40" prefHeight="80" vgrow="ALWAYS"/>
+    </rowConstraints>
+
+    <Label fx:id="entryTitle" text="Entrée utilisateur : " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <Label fx:id="copyTitle" text="Copie de l'entrée : " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+
+    <TextField fx:id="entryField" text="Saisissez un texte" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+    <TextField fx:id="copyField" text="" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+    <VBox spacing="10" fillWidth="true" alignment="CENTER"
+          GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.rowSpan="2"
+          GridPane.vgrow="ALWAYS">
+        <Region VBox.vgrow="ALWAYS" />
+        <Button text="Recopier" onAction="#onRecopierButtonClick" maxWidth="Infinity"/>
+        <Region VBox.vgrow="ALWAYS" />
+        <Button text="Effacer" onAction="#onEffacerButtonClick" maxWidth="Infinity"/>
+        <Region VBox.vgrow="ALWAYS" />
+        <Button text="Quitter" onAction="#onQuitterButtonClick" maxWidth="Infinity"/>
+        <Region VBox.vgrow="ALWAYS" />
+    </VBox>
+
+</GridPane>
+
