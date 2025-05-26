@@ -14,9 +14,12 @@ public class AdditionerController {
     @FXML
     private HBox numbersZone;
 
+    private int currentSum = 0;
+    private StringBuilder displayAddition = new StringBuilder();
+
     @FXML
     public void initialize() {
-        for (int i = 1; i <=9; i++){
+        for (int i = 1; i <= 9; i++) {
             Button btn = new Button(Integer.toString(i));
             btn.prefWidth(5);
             btn.prefHeight(5);
@@ -26,35 +29,38 @@ public class AdditionerController {
         }
     }
 
-        private void ajouterChiffre(int chiffre) {
-            String displayedNumber = additionArea.getText();
-            if (displayedNumber.isEmpty()) {
-                additionArea.setText(Integer.toString(chiffre));
-            }
-            else {
-                additionArea.setText(displayedNumber + " + " + chiffre);
-            }
+    private void ajouterChiffre(int chiffre) {
+        currentSum += chiffre;
+        if (displayAddition.length() == 0) {
+            displayAddition.append(chiffre);
+        } else {
+            displayAddition.append(" + ").append(chiffre);
         }
+        updateAffichage();
+    }
+
+    private void updateAffichage() {
+        String affichage = displayAddition.toString();
+        if (!affichage.contains("+")) {
+            additionArea.setText(affichage);
+        } else {
+            additionArea.setText(affichage + " = " + currentSum);
+        }
+    }
 
     @FXML
     protected void onViderButtonClick() {
+        currentSum = 0;
+        displayAddition.setLength(0);
         additionArea.clear();
     }
 
     @FXML
     protected void onCalculerButtonClick() {
-        String content = additionArea.getText();
-        if (content.isEmpty()) {
+        if (displayAddition.length() == 0) {
             return;
         }
-        String[] parts = content.split("\\s*\\+\\s*");
-        int somme = 0;
-        for (String part : parts) {
-            try {
-                somme += (Integer.parseInt(part.trim()));
-            } catch (NumberFormatException ignore) {}
-        }
-        additionArea.setText(content + " = " + somme);
+        updateAffichage();
     }
-    }
+}
 
