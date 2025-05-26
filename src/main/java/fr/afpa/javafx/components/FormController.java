@@ -1,4 +1,4 @@
-package fr.afpa.javafx;
+package fr.afpa.javafx.components;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;

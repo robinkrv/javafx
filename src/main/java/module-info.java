@@ -8,4 +8,6 @@ module fr.afpa.javafx {
 
     opens fr.afpa.javafx to javafx.fxml;
     exports fr.afpa.javafx;
+    exports fr.afpa.javafx.components;
+    opens fr.afpa.javafx.components to javafx.fxml;
 }
