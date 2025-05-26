@@ -3,7 +3,6 @@ package fr.afpa.javafx.components;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 
 public class AdditionerController {
@@ -16,7 +15,7 @@ public class AdditionerController {
 
     @FXML
     public void initialize() {
-        for (int i = 1; i <=9; i++){
+        for (int i = 1; i <= 9; i++) {
             Button btn = new Button(Integer.toString(i));
             btn.prefWidth(5);
             btn.prefHeight(5);
@@ -26,15 +25,14 @@ public class AdditionerController {
         }
     }
 
-        private void ajouterChiffre(int chiffre) {
-            String displayedNumber = additionArea.getText();
-            if (displayedNumber.isEmpty()) {
-                additionArea.setText(Integer.toString(chiffre));
-            }
-            else {
-                additionArea.setText(displayedNumber + " + " + chiffre);
-            }
+    private void ajouterChiffre(int chiffre) {
+        String displayedNumber = additionArea.getText();
+        if (displayedNumber.isEmpty()) {
+            additionArea.setText(Integer.toString(chiffre));
+        } else {
+            additionArea.setText(displayedNumber + " + " + chiffre);
         }
+    }
 
     @FXML
     protected void onViderButtonClick() {
@@ -47,14 +45,17 @@ public class AdditionerController {
         if (content.isEmpty()) {
             return;
         }
+
+        // TODO OPTIMISATION EN TEMPS comment faire en sorte de ne pas avoir à parser la
+        // chaîne de caractères et calculer la somme au fil des cliques ?
         String[] parts = content.split("\\s*\\+\\s*");
         int somme = 0;
         for (String part : parts) {
             try {
                 somme += (Integer.parseInt(part.trim()));
-            } catch (NumberFormatException ignore) {}
+            } catch (NumberFormatException ignore) {
+            }
         }
         additionArea.setText(content + " = " + somme);
     }
-    }
-
+}
