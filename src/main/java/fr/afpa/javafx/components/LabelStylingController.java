@@ -13,24 +13,27 @@ public class LabelStylingController {
     @FXML private RadioButton blueRadio;
     @FXML private RadioButton uppercaseRadio;
     @FXML private RadioButton lowercaseRadio;
-    @FXML
-    private TextField entryField;
-    @FXML
-    private Label displayBox;
-    @FXML
-    private TitledPane labelParams;
-    @FXML
-    private TitledPane backgroundParams;
-    @FXML
-    private TitledPane charParams;
-    @FXML
-    private TitledPane caseParams;
+    @FXML private TextField entryField;
+    @FXML private Label displayBox;
+    @FXML private TitledPane labelParams;
+    @FXML private TitledPane backgroundParams;
+    @FXML private TitledPane charParams;
+    @FXML private TitledPane caseParams;
     @FXML private CheckBox backgroundCheckbox;
     @FXML private CheckBox charCheckbox;
     @FXML private CheckBox caseCheckbox;
+    @FXML private Slider redSlider;
+    @FXML private Slider greenSlider;
+    @FXML private Slider blueSlider;
 
     @FXML
     public void initialize() {
+        setupToggleGroups();
+        setupBindings();
+        setupListeners();
+    }
+
+    private void setupToggleGroups() {
         colorGroup = new ToggleGroup();
         redRadio.setToggleGroup(colorGroup);
         greenRadio.setToggleGroup(colorGroup);
@@ -38,26 +41,144 @@ public class LabelStylingController {
         caseGroup = new ToggleGroup();
         uppercaseRadio.setToggleGroup(caseGroup);
         lowercaseRadio.setToggleGroup(caseGroup);
-        displayBox.textProperty().bind(entryField.textProperty()); //textProperty est une propriété native des éléments
+    }
+
+    private void setupBindings() {
         labelParams.setDisable(true);
         backgroundParams.setDisable(true);
         charParams.setDisable(true);
         caseParams.setDisable(true);
+        if (redSlider != null) redSlider.setValue(0);
+        if (greenSlider != null) greenSlider.setValue(0);
+        if (blueSlider != null) blueSlider.setValue(0);
+    }
+
+    private void setupListeners() {
         entryField.textProperty().addListener((obs, oldVal, newVal) -> {
-            boolean active = !newVal.trim().isEmpty(); // active si NON vide, grace à trim qui supprime les espaces
+            boolean active = !newVal.trim().isEmpty();
             labelParams.setDisable(!active);
             updateBottomTitledPanes(active);
+            if (!active) {
+                resetAllStylesAndCases();
+            }
+            updateDisplayText();
         });
 
-        backgroundCheckbox.selectedProperty().addListener((obs, ov, nv) -> updateBottomTitledPanes(!entryField.getText().trim().isEmpty()));
-        charCheckbox.selectedProperty().addListener((obs, ov, nv) -> updateBottomTitledPanes(!entryField.getText().trim().isEmpty()));
-        caseCheckbox.selectedProperty().addListener((obs, ov, nv) -> updateBottomTitledPanes(!entryField.getText().trim().isEmpty()));
+        colorGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+            if (backgroundCheckbox.isSelected()) {
+                applyBackgroundColor();
+            }
+        });
+        backgroundCheckbox.selectedProperty().addListener((obs, wasChecked, isNowChecked) -> {
+            updateBottomTitledPanes(!entryField.getText().trim().isEmpty());
+            if (isNowChecked) {
+                applyBackgroundColor();
+            } else {
+                resetBackgroundColor();
+            }
+        });
+
+        charCheckbox.selectedProperty().addListener((obs, wasChecked, isNowChecked) -> {
+            updateBottomTitledPanes(!entryField.getText().trim().isEmpty());
+            if (!isNowChecked) resetTextColor();
+        });
+
+        caseGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> updateDisplayText());
+        caseCheckbox.selectedProperty().addListener((obs, wasChecked, isNowChecked) -> {
+            updateBottomTitledPanes(!entryField.getText().trim().isEmpty());
+            updateDisplayText();
+        });
+
+        if (redSlider != null)
+            redSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+                if (charCheckbox.isSelected()) {
+                    applyCharColor();
+                }
+            });
+        if (greenSlider != null)
+            greenSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+                if (charCheckbox.isSelected()) {
+                    applyCharColor();
+                }
+            });
+        if (blueSlider != null)
+            blueSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+                if (charCheckbox.isSelected()) {
+                    applyCharColor();
+                }
+            });
     }
 
     private void updateBottomTitledPanes(boolean active) {
         backgroundParams.setDisable(!(active && backgroundCheckbox.isSelected()));
         charParams.setDisable(!(active && charCheckbox.isSelected()));
         caseParams.setDisable(!(active && caseCheckbox.isSelected()));
+        if (redSlider != null) redSlider.setDisable(!active || !charCheckbox.isSelected());
+        if (greenSlider != null) greenSlider.setDisable(!active || !charCheckbox.isSelected());
+        if (blueSlider != null) blueSlider.setDisable(!active || !charCheckbox.isSelected());
+    }
+
+    private void applyBackgroundColor() {
+        if (!backgroundCheckbox.isSelected()) return;
+        String oldStyle = displayBox.getStyle().replaceAll("-fx-background-color:[^;]*;?", "");
+        if (colorGroup.getSelectedToggle() == redRadio) {
+            displayBox.setStyle(oldStyle + "-fx-background-color: red;");
+        } else if (colorGroup.getSelectedToggle() == greenRadio) {
+            displayBox.setStyle(oldStyle + "-fx-background-color: green;");
+        } else if (colorGroup.getSelectedToggle() == blueRadio) {
+            displayBox.setStyle(oldStyle + "-fx-background-color: blue;");
+        } else {
+            resetBackgroundColor();
+        }
+    }
+
+    private void resetBackgroundColor() {
+        displayBox.setStyle(displayBox.getStyle().replaceAll("-fx-background-color:[^;]*;?", ""));
+    }
+
+    // Si tu veux ajouter une couleur de texte (charParams), fais comme pour ci-dessus
+    private void resetTextColor() {
+        displayBox.setStyle(displayBox.getStyle().replaceAll("-fx-text-fill:[^;]*;?", ""));
+    }
+
+    private void applyCharColor() {
+        if (!charCheckbox.isSelected()) return;
+        String oldStyle = displayBox.getStyle().replaceAll("-fx-text-fill:[^;]*;?", "");
+
+        int r = (redSlider != null) ? (int) redSlider.getValue() : 0;
+        int g = (greenSlider != null) ? (int) greenSlider.getValue() : 0;
+        int b = (blueSlider != null) ? (int) blueSlider.getValue() : 0;
+
+        String rgb = String.format("-fx-text-fill: rgb(%d,%d,%d);", r, g, b);
+
+        displayBox.setStyle(oldStyle + rgb);
+    }
+
+    private void updateDisplayText() {
+        String txt = entryField.getText();
+        if (caseCheckbox.isSelected()) {
+            if (caseGroup.getSelectedToggle() == uppercaseRadio) {
+                displayBox.setText(txt.toUpperCase());
+            } else if (caseGroup.getSelectedToggle() == lowercaseRadio) {
+                displayBox.setText(txt.toLowerCase());
+            } else {
+                displayBox.setText(txt);
+            }
+        } else {
+            displayBox.setText(txt);
+        }
+    }
+
+    private void resetAllStylesAndCases() {
+        displayBox.setStyle("");
+        displayBox.setText("");
+        colorGroup.selectToggle(null);
+        caseGroup.selectToggle(null);
+        backgroundCheckbox.setSelected(false);
+        charCheckbox.setSelected(false);
+        caseCheckbox.setSelected(false);
+        if (redSlider != null) redSlider.setValue(0);
+        if (greenSlider != null) greenSlider.setValue(0);
+        if (blueSlider != null) blueSlider.setValue(0);
     }
 }
-
