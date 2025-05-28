@@ -2,6 +2,7 @@ package fr.afpa.javafx.components;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 
 public class LabelStylingController {
     @FXML
@@ -138,21 +139,19 @@ public class LabelStylingController {
 
     // Si tu veux ajouter une couleur de texte (charParams), fais comme pour ci-dessus
     private void resetTextColor() {
-        displayBox.setStyle(displayBox.getStyle().replaceAll("-fx-text-fill:[^;]*;?", ""));
+        displayBox.setTextFill(Color.BLACK);
     }
 
     private void applyCharColor() {
         if (!charCheckbox.isSelected()) return;
-        String oldStyle = displayBox.getStyle().replaceAll("-fx-text-fill:[^;]*;?", "");
 
         int r = (redSlider != null) ? (int) redSlider.getValue() : 0;
         int g = (greenSlider != null) ? (int) greenSlider.getValue() : 0;
         int b = (blueSlider != null) ? (int) blueSlider.getValue() : 0;
 
-        String rgb = String.format("-fx-text-fill: rgb(%d,%d,%d);", r, g, b);
-
-        displayBox.setStyle(oldStyle + rgb);
+        displayBox.setTextFill(Color.rgb(r, g, b));
     }
+
 
     private void updateDisplayText() {
         String txt = entryField.getText();
