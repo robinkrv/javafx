@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -13,7 +10,7 @@
             prefHeight="400.0" prefWidth="600.0">
 
     <VBox fx:id="textBox" spacing="2" alignment="CENTER_LEFT" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="30.0">
-    <Label fx:id="entryTitle" text="Saisissez votre texte :"/>
+    <Label text="Saisissez votre texte :"/>
         <TextField fx:id="entryField"/>
 
         <Label fx:id="displayBox">
@@ -81,15 +78,15 @@
                 <VBox spacing="10">
                     <HBox spacing="8" alignment="CENTER_LEFT">
                         <Label fx:id="color" text="Rouge"/>
-                        <Slider fx:id="redSlider"/>
+                        <Slider fx:id="redSlider" min="0" max="255"/>
                     </HBox>
                     <HBox spacing="8" alignment="CENTER_LEFT">
                         <Label fx:id="color2" text="Vert"/>
-                        <Slider fx:id="greenSlider"/>
+                        <Slider fx:id="greenSlider" min="0" max="255"/>
                     </HBox>
                     <HBox spacing="8" alignment="CENTER_LEFT">
                         <Label fx:id="color3" text="Bleu"/>
-                        <Slider fx:id="blueSlider"/>
+                        <Slider fx:id="blueSlider" min="0" max="255"/>
                     </HBox>
                 </VBox>
             </content>
