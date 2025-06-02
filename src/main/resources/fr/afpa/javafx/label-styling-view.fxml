@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="fr.afpa.javafx.components.LabelStylingController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <VBox fx:id="textBox" spacing="2" alignment="CENTER_LEFT" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="30.0">
+    <Label text="Saisissez votre texte :"/>
+        <TextField fx:id="entryField"/>
+
+        <Label fx:id="displayBox">
+            <VBox.margin>
+                <Insets top="24"/>
+            </VBox.margin>
+        </Label>
+    </VBox>
+
+    <TitledPane fx:id="labelParams" text="" alignment="CENTER_RIGHT" AnchorPane.topAnchor="10.0" AnchorPane.rightAnchor="30.0">
+        <graphic>
+            <StackPane alignment="CENTER_LEFT" style="-fx-pref-width: 200px;">
+                <Label text="Paramètres Label" style="-fx-font-size: 12px;"/>
+            </StackPane>
+        </graphic>
+        <content>
+        <VBox spacing="10">
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <CheckBox fx:id="backgroundCheckbox"/>
+                <Label fx:id="backgroundColor" text="Couleur de Fond"/>
+            </HBox>
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <CheckBox fx:id="charCheckbox"/>
+                <Label fx:id="charColor" text="Couleur des caractères"/>
+            </HBox>
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <CheckBox fx:id="caseCheckbox"/>
+                <Label fx:id="case" text="Casse"/>
+            </HBox>
+        </VBox>
+        </content>
+    </TitledPane>
+
+    <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="30.0" spacing="10">
+        <TitledPane fx:id="backgroundParams" text="" prefWidth="50">
+            <graphic>
+                <StackPane alignment="CENTER_LEFT" style="-fx-pref-width: 50px;">
+                    <Label text="Fond" style="-fx-font-size: 12px;"/>
+                </StackPane>
+            </graphic>
+            <content>
+                <VBox spacing="10">
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <RadioButton fx:id="redRadio" text="" toggleGroup="$colorGroup"/>
+                        <Label fx:id="background" text="Rouge"/>
+                    </HBox>
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <RadioButton fx:id="greenRadio" toggleGroup="$colorGroup"/>
+                        <Label fx:id="background2" text="Vert"/>
+                    </HBox>
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <RadioButton fx:id="blueRadio" toggleGroup="$colorGroup"/>
+                        <Label fx:id="background3" text="Bleu"/>
+                    </HBox>
+                </VBox>
+            </content>
+        </TitledPane>
+        <TitledPane fx:id="charParams" text="">
+            <graphic>
+                <StackPane alignment="CENTER_LEFT" style="-fx-pref-width: 200px;">
+                    <Label text="Couleur des caractères" style="-fx-font-size: 12px;"/>
+                </StackPane>
+            </graphic>
+            <content>
+                <VBox spacing="10">
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <Label fx:id="color" text="Rouge"/>
+                        <Slider fx:id="redSlider" min="0" max="255"/>
+                    </HBox>
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <Label fx:id="color2" text="Vert"/>
+                        <Slider fx:id="greenSlider" min="0" max="255"/>
+                    </HBox>
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <Label fx:id="color3" text="Bleu"/>
+                        <Slider fx:id="blueSlider" min="0" max="255"/>
+                    </HBox>
+                </VBox>
+            </content>
+        </TitledPane>
+        <TitledPane fx:id="caseParams" text="">
+            <graphic>
+                <StackPane alignment="CENTER_LEFT" style="-fx-pref-width: 50px;">
+                    <Label text="Casse" style="-fx-font-size: 12px;"/>
+                </StackPane>
+            </graphic>
+            <content>
+                <VBox spacing="10">
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <RadioButton fx:id="uppercaseRadio" text="" toggleGroup="$caseGroup"/>
+                        <Label fx:id="uppercase" text="Majuscule"/>
+                    </HBox>
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <RadioButton fx:id="lowercaseRadio" toggleGroup="$caseGroup"/>
+                        <Label fx:id="lowercase" text="Minuscule"/>
+                    </HBox>
+                </VBox>
+            </content>
+        </TitledPane>
+    </HBox>
+</AnchorPane>

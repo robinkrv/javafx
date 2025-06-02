@@ -13,6 +13,9 @@ public class AdditionerController {
     @FXML
     private HBox numbersZone;
 
+    private int currentSum = 0;
+    private StringBuilder displayAddition = new StringBuilder();
+
     @FXML
     public void initialize() {
         for (int i = 1; i <= 9; i++) {
@@ -26,36 +29,37 @@ public class AdditionerController {
     }
 
     private void ajouterChiffre(int chiffre) {
-        String displayedNumber = additionArea.getText();
-        if (displayedNumber.isEmpty()) {
-            additionArea.setText(Integer.toString(chiffre));
+        currentSum += chiffre;
+        if (displayAddition.length() == 0) {
+            displayAddition.append(chiffre);
         } else {
-            additionArea.setText(displayedNumber + " + " + chiffre);
+            displayAddition.append(" + ").append(chiffre);
+        }
+        updateAffichage();
+    }
+
+    private void updateAffichage() {
+        String affichage = displayAddition.toString();
+        if (!affichage.contains("+")) {
+            additionArea.setText(affichage);
+        } else {
+            additionArea.setText(affichage + " = " + currentSum);
         }
     }
 
     @FXML
     protected void onViderButtonClick() {
+        currentSum = 0;
+        displayAddition.setLength(0);
         additionArea.clear();
     }
 
     @FXML
     protected void onCalculerButtonClick() {
-        String content = additionArea.getText();
-        if (content.isEmpty()) {
+        if (displayAddition.length() == 0) {
             return;
         }
-
-        // TODO OPTIMISATION EN TEMPS comment faire en sorte de ne pas avoir à parser la
-        // chaîne de caractères et calculer la somme au fil des cliques ?
-        String[] parts = content.split("\\s*\\+\\s*");
-        int somme = 0;
-        for (String part : parts) {
-            try {
-                somme += (Integer.parseInt(part.trim()));
-            } catch (NumberFormatException ignore) {
-            }
-        }
-        additionArea.setText(content + " = " + somme);
+        updateAffichage();
     }
 }
+
