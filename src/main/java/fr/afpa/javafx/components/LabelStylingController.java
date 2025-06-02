@@ -2,29 +2,49 @@ package fr.afpa.javafx.components;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.paint.Color;
 
 public class LabelStylingController {
     @FXML
     private ToggleGroup colorGroup;
     @FXML
     private ToggleGroup caseGroup;
-    @FXML private RadioButton redRadio;
-    @FXML private RadioButton greenRadio;
-    @FXML private RadioButton blueRadio;
-    @FXML private RadioButton uppercaseRadio;
-    @FXML private RadioButton lowercaseRadio;
-    @FXML private TextField entryField;
-    @FXML private Label displayBox;
-    @FXML private TitledPane labelParams;
-    @FXML private TitledPane backgroundParams;
-    @FXML private TitledPane charParams;
-    @FXML private TitledPane caseParams;
-    @FXML private CheckBox backgroundCheckbox;
-    @FXML private CheckBox charCheckbox;
-    @FXML private CheckBox caseCheckbox;
-    @FXML private Slider redSlider;
-    @FXML private Slider greenSlider;
-    @FXML private Slider blueSlider;
+    @FXML
+    private RadioButton redRadio;
+    @FXML
+    private RadioButton greenRadio;
+    @FXML
+    private RadioButton blueRadio;
+    @FXML
+    private RadioButton uppercaseRadio;
+    @FXML
+    private RadioButton lowercaseRadio;
+    @FXML
+    private TextField entryField;
+    @FXML
+    private Label displayBox;
+    @FXML
+    private TitledPane labelParams;
+    @FXML
+    private TitledPane backgroundParams;
+    @FXML
+    private TitledPane charParams;
+    @FXML
+    private TitledPane caseParams;
+    @FXML
+    private CheckBox backgroundCheckbox;
+    @FXML
+    private CheckBox charCheckbox;
+    @FXML
+    private CheckBox caseCheckbox;
+    @FXML
+    private Slider redSlider;
+    @FXML
+    private Slider greenSlider;
+    @FXML
+    private Slider blueSlider;
 
     @FXML
     public void initialize() {
@@ -48,9 +68,12 @@ public class LabelStylingController {
         backgroundParams.setDisable(true);
         charParams.setDisable(true);
         caseParams.setDisable(true);
-        if (redSlider != null) redSlider.setValue(0);
-        if (greenSlider != null) greenSlider.setValue(0);
-        if (blueSlider != null) blueSlider.setValue(0);
+        if (redSlider != null)
+            redSlider.setValue(0);
+        if (greenSlider != null)
+            greenSlider.setValue(0);
+        if (blueSlider != null)
+            blueSlider.setValue(0);
     }
 
     private void setupListeners() {
@@ -69,6 +92,7 @@ public class LabelStylingController {
                 applyBackgroundColor();
             }
         });
+
         backgroundCheckbox.selectedProperty().addListener((obs, wasChecked, isNowChecked) -> {
             updateBottomTitledPanes(!entryField.getText().trim().isEmpty());
             if (isNowChecked) {
@@ -80,7 +104,8 @@ public class LabelStylingController {
 
         charCheckbox.selectedProperty().addListener((obs, wasChecked, isNowChecked) -> {
             updateBottomTitledPanes(!entryField.getText().trim().isEmpty());
-            if (!isNowChecked) resetTextColor();
+            if (!isNowChecked)
+                resetTextColor();
         });
 
         caseGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> updateDisplayText());
@@ -113,13 +138,24 @@ public class LabelStylingController {
         backgroundParams.setDisable(!(active && backgroundCheckbox.isSelected()));
         charParams.setDisable(!(active && charCheckbox.isSelected()));
         caseParams.setDisable(!(active && caseCheckbox.isSelected()));
-        if (redSlider != null) redSlider.setDisable(!active || !charCheckbox.isSelected());
-        if (greenSlider != null) greenSlider.setDisable(!active || !charCheckbox.isSelected());
-        if (blueSlider != null) blueSlider.setDisable(!active || !charCheckbox.isSelected());
+        if (redSlider != null)
+            redSlider.setDisable(!active || !charCheckbox.isSelected());
+        if (greenSlider != null)
+            greenSlider.setDisable(!active || !charCheckbox.isSelected());
+        if (blueSlider != null)
+            blueSlider.setDisable(!active || !charCheckbox.isSelected());
     }
 
     private void applyBackgroundColor() {
-        if (!backgroundCheckbox.isSelected()) return;
+        if (!backgroundCheckbox.isSelected())
+            return;
+
+        // TODO Okay pour solution avec du CSS
+        // mais le traitement d'une chaîne de caractère peut être couteuse en temps
+        // Il est possible de passer par une solution sans CSS afin de s'affranchir de ce traitement
+        // Par exemple, pour changer la couleur de fond d'un label il est possible d'utiliser le code suivant :
+        //            displayBox.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
+
         String oldStyle = displayBox.getStyle().replaceAll("-fx-background-color:[^;]*;?", "");
         if (colorGroup.getSelectedToggle() == redRadio) {
             displayBox.setStyle(oldStyle + "-fx-background-color: red;");
@@ -136,21 +172,28 @@ public class LabelStylingController {
         displayBox.setStyle(displayBox.getStyle().replaceAll("-fx-background-color:[^;]*;?", ""));
     }
 
-    // Si tu veux ajouter une couleur de texte (charParams), fais comme pour ci-dessus
+    // Si tu veux ajouter une couleur de texte (charParams), fais comme pour
+    // ci-dessus
     private void resetTextColor() {
         displayBox.setStyle(displayBox.getStyle().replaceAll("-fx-text-fill:[^;]*;?", ""));
     }
 
     private void applyCharColor() {
-        if (!charCheckbox.isSelected()) return;
+
+        if (!charCheckbox.isSelected())
+            return;
+
+        // TODO Okay pour solution avec du CSS mais même remarque que précédemment
         String oldStyle = displayBox.getStyle().replaceAll("-fx-text-fill:[^;]*;?", "");
 
+        // TODO comment ne pas multiplier les ternaires ?
+        // 1 seul "if" possible ?
         int r = (redSlider != null) ? (int) redSlider.getValue() : 0;
         int g = (greenSlider != null) ? (int) greenSlider.getValue() : 0;
         int b = (blueSlider != null) ? (int) blueSlider.getValue() : 0;
 
         String rgb = String.format("-fx-text-fill: rgb(%d,%d,%d);", r, g, b);
-
+        
         displayBox.setStyle(oldStyle + rgb);
     }
 
@@ -177,8 +220,11 @@ public class LabelStylingController {
         backgroundCheckbox.setSelected(false);
         charCheckbox.setSelected(false);
         caseCheckbox.setSelected(false);
-        if (redSlider != null) redSlider.setValue(0);
-        if (greenSlider != null) greenSlider.setValue(0);
-        if (blueSlider != null) blueSlider.setValue(0);
+        if (redSlider != null)
+            redSlider.setValue(0);
+        if (greenSlider != null)
+            greenSlider.setValue(0);
+        if (blueSlider != null)
+            blueSlider.setValue(0);
     }
 }
